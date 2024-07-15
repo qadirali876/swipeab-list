@@ -12,6 +12,7 @@ import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {dummyData} from '../utilites/dummyData';
 import ListDataComp from '../components/ListDataComp';
+import { sortArrayData } from '../utilites/helperFunctions';
 const screenWidth = Dimensions.get('window').width;
 const MainScreen = gestureHandlerRootHOC(() => {
   const swipeableRefs = useRef([]);
@@ -77,15 +78,7 @@ const MainScreen = gestureHandlerRootHOC(() => {
       }
     });
 
-    const sortedData = [...newData].sort((a, b) => {
-        if (a.pin && !b.pin) {
-          return -1;
-        } else if (!a.pin && b.pin) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
+    const sortedData = sortArrayData(newData);
     setData(sortedData);
   };
 
@@ -102,7 +95,8 @@ const MainScreen = gestureHandlerRootHOC(() => {
       }
     });
 
-    setData(newData?.filter(item => item));
+    const sortedData = sortArrayData(newData);
+    setData(sortedData?.filter(item => item));
   };
 
   return (
