@@ -1,13 +1,16 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-const ListDataComp = ({item}) => {
-    return(
-        <View style={styles.listMainConatiner}>
+const ListDataComp = ({item, onPressUnpin}) => {
+    return (
+      <View style={styles.listMainConatiner}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <View>
             <View style={{flexDirection: 'row'}}>
-              <Image source={require('../assets/images/telegram.png')} style={{height: 18, width: 18}} />
+              <Image
+                source={require('../assets/images/telegram.png')}
+                style={{height: 18, width: 18}}
+              />
               <Text style={[styles.messageFontStyle, {fontSize: 12, left: 5}]}>
                 {item?.role}
               </Text>
@@ -24,15 +27,17 @@ const ListDataComp = ({item}) => {
           <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <Text style={[styles.messageFontStyle]}>{item?.dateTime}</Text>
             {item?.pin && (
-              <Image
-                source={require('../assets/images/pin.png')}
-                style={{height: 20, width: 20}}
-              />
+              <TouchableOpacity onPress={() => onPressUnpin(item)}>
+                <Image
+                  source={require('../assets/images/pin.png')}
+                  style={{height: 20, width: 20}}
+                />
+              </TouchableOpacity>
             )}
           </View>
         </View>
       </View>
-    )
+    );
 }
 
 export default ListDataComp;

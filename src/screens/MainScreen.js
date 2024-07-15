@@ -12,8 +12,9 @@ import {gestureHandlerRootHOC} from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {dummyData} from '../utilites/dummyData';
 import ListDataComp from '../components/ListDataComp';
-import { sortArrayData } from '../utilites/helperFunctions';
+import {sortArrayData} from '../utilites/helperFunctions';
 const screenWidth = Dimensions.get('window').width;
+
 const MainScreen = gestureHandlerRootHOC(() => {
   const swipeableRefs = useRef([]);
   const [data, setData] = useState(dummyData);
@@ -27,15 +28,25 @@ const MainScreen = gestureHandlerRootHOC(() => {
           styles.swipeContainerStyle,
           {backgroundColor: 'skyblue', alignItems: 'flex-start'},
         ]}>
-        <Text style={styles.swipeFont}>Pin</Text>
+        <Image
+          source={require('../assets/images/pin.png')}
+          style={{height: 20, width: 20}}
+        />
       </View>
     );
   };
 
-  const rightSwipeActions = (item) => {
+  const rightSwipeActions = item => {
     return (
-      <View style={[styles.swipeContainerStyle, {backgroundColor: item?.pin ? 'skyblue' : 'red'}]}>
-        <Text style={styles.swipeFont}>{item?.pin ? 'Unpin' : 'Delete'}</Text>
+      <View
+        style={[
+          styles.swipeContainerStyle,
+          {backgroundColor: item?.pin ? 'skyblue' : 'red'},
+        ]}>
+        <Image
+          source={ item?.pin ? require('../assets/images/pin.png') : require('../assets/images/delete.png')}
+          style={{height: 20, width: 20}}
+        />
       </View>
     );
   };
@@ -43,7 +54,7 @@ const MainScreen = gestureHandlerRootHOC(() => {
   const handleSwipeableOpen = index => {
     setTimeout(() => {
       swipeableRefs.current[index]?.close();
-    }, 50); 
+    }, 50);
   };
 
   const swipeFromLeftOpen = item => {
@@ -63,7 +74,7 @@ const MainScreen = gestureHandlerRootHOC(() => {
         onSwipeableRightOpen={() => swipeFromRightOpen(item)}
         onSwipeableLeftOpen={() => swipeFromLeftOpen(item)}>
         <View style={{marginVertical: 1}}>
-            <ListDataComp item={item} />
+          <ListDataComp item={item} onPressUnpin={(item) => deleteIndex(item)} />
         </View>
       </Swipeable>
     );
@@ -104,7 +115,6 @@ const MainScreen = gestureHandlerRootHOC(() => {
       style={{
         flex: 1,
         backgroundColor: 'black',
-        
       }}>
       <FlatList
         data={data}
@@ -121,27 +131,23 @@ export default MainScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black'
+    backgroundColor: 'black',
   },
- 
+
   itemSeparator: {
     flex: 1,
     marginVertical: 5,
-    // backgroundColor: '#444',
   },
   swipeFont: {
-    // color: '#1b1a17',
     color: 'white',
-    paddingHorizontal: 10,
     fontWeight: '600',
-    paddingHorizontal: 30,
-    paddingVertical: 20,
   },
- 
+
   swipeContainerStyle: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-end',
     borderRadius: 12,
+    paddingHorizontal: 20,
   },
 });
